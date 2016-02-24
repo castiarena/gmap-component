@@ -22,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/castiarena/gmap-component/issues"
   },
-  "homepage": "https://github.com/castiarena/gmap-component"
+  "homepage": "https://github.com/castiarena/gmap-component",
+  "dependencies": {
+    "browser-sync": "^2.11.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.2.0",
+    "gulp-uglify": "^1.5.3"
+  }
 }
