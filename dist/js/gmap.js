@@ -14,27 +14,58 @@ var geo = {
         }
     }
 };
-var marker = '';
+function Dependencie(_url, _config) {
+    var config = _config,
+        that = this;
+
+    that.config = {
+        type: config.type || 'script',
+        elementString: config.elementString || 'head' ,
+        api: !config ? null : {key: config.api.key, search: (config.api.search || 'KEY')} ,
+        url: _url,
+        id: config.name || new Date().getTime() + '-dependencie'
+    };
+
+    (function(){
+        that.insert();
+    }())
+}
+
+
+Dependencie.prototype.insert = function(){
+    var that = this,
+        sc = document.createElement(that.config.type);
+    sc.id = that.config.id;
+    sc.src = that.config.api !== null ? that.config.url.replace(that.config.api.search, that.config.api.key) : that.config.url;
+    document.getElementsByTagName(that.config.elementString)[0].appendChild(sc);
+};
+
+Dependencie.prototype.remove = function(){
+    var that = this,
+        sc = document.getElementById(that.config.id);
+    document.getElementsByTagName(that.config.elementString)[0].removeChild(sc);
+};
 /** <import>components/geolocation.js</import> **/
-/** <import>components/markers.js</import> **/
+/** <import>components/dependencies.js</import> **/
 
 
 var GMap = function(config){
     var that = this;
-    that.config = config;
-    that.doc = document;
-    that.map = null;
-    that.position = that.config.position || null;
-    that.markers = {};
-    that.peremeters = {};
-
+    that.config         = config;
+    that.geolocation    = config.geolocation || false;
+    that.libraries      = config.libraries || null;
+    that.doc            = document;
+    that.map            = null;
+    that.position       = that.config.position || null;
+    that.markers        = {};
+    that.peremeters     = {};
+    that.dependencie    = null;
 
     that.dependencies();
     that.doc.initGmap = function(){
         that.init();
     };
 
-   // that.doc = null;
 
 };
 
@@ -46,7 +77,7 @@ GMap.prototype.init = function(){
     /**
      * check if needs geolocation
      */
-    if(that.config.geolocation && that.position === null){
+    if(that.geolocation && that.position === null){
         geo.get('position',{
             onSuccess:function(position){
                 that.position = { lat: position.coords.latitude , lng: position.coords.longitude};
@@ -54,7 +85,11 @@ GMap.prototype.init = function(){
             }
         });
     }else{
-        that.createMap();
+        if(that.position === null){
+            throw new Error('Must set a position');
+        }else{
+            that.createMap();
+        }
     }
 
 
@@ -65,10 +100,48 @@ GMap.prototype.createMap = function(){
     that.map =  new google.maps.Map(
         that.el(), {
             center: that.position,
-            zoom: 16
+            zoom: 16,
+            mapTypeControl: false,
+            navigationControlOptions: {
+                style: google.maps.NavigationControlStyle.SMALL
+            },
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_CENTER
+            },
+            streetViewControl: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles:[
+                {
+                    featureType: "poi",
+                    elementType: "labels",
+                    stylers: [
+                        { visibility: "off" }
+                    ]
+                },
+                {
+                    featureType: "road",
+                    elementType: "labels",
+                    stylers: [
+                        { visibility: "simplified" }
+                    ]
+                },
+                {
+                    featureType: "transit.station",
+                    elementType: "all",
+                    stylers: [
+                        { visibility: "off" }
+                    ]
+                },
+                {
+                    featureType: "landscape.man_made",
+                    elementType: "all",
+                    stylers: [
+                        { visibility: "off" }
+                    ]
+                }
+            ]
         });
     that.setMarker('user', that.position);
-    that.setPeremeter('user',that.position);
 };
 
 GMap.prototype.setMarker = function(type, position){
@@ -103,8 +176,20 @@ GMap.prototype.el = function() {
 
 
 GMap.prototype.dependencies = function(){
-    var that = this,
-        sc = that.doc.createElement('script');
-    sc.src = 'https://maps.googleapis.com/maps/api/js?key='+that.config.api+'&callback=document.initGmap';
-    that.doc.getElementsByTagName('head')[0].appendChild(sc);
+
+    var that = this;
+        that.dependencie = new Dependencie(
+        'https://maps.googleapis.com/maps/api/js?key=|KEY|&callback=document.initGmap',
+        {
+            api:{
+                search:'|KEY|',
+                key: that.config.api
+            }
+        });
+};
+
+
+GMap.prototype.events = function(){
+    var that = this;
+    // TODO events
 };

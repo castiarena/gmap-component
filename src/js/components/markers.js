@@ -1,1 +1,0 @@
-var marker = ''; // TODO abstraer marker a este archivo

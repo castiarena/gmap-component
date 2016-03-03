@@ -1,6 +1,19 @@
-.gmap{
+.gmap-full-screen{
   width: 100%;
   height: 100%;
+  display: inline-block;
+  float: left;
+  position: relative;
+  &-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+}
+
+.gmap-full-width{
+  width: 100%;
+  min-height: 500px;
   display: inline-block;
   float: left;
   position: relative;
