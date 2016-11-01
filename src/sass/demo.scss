@@ -1,0 +1,45 @@
+@import "reset-browser";
+@import "variables";
+@import "mixins";
+@import "grid";
+
+body{
+
+  background-color: mediumaquamarine;
+  color: $f-color-base;
+  font-size: $f-size-m;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+p{
+  font-size: $f-size-m;
+}
+
+h1{  font-size: $f-title-size * 3; }
+h2{  font-size: $f-title-size * 2; }
+h3{  font-size: $f-title-size; }
+h4{  font-size: $f-title-size / 2; }
+h5{  font-size: $f-title-size / 3; }
+h1, h2, h3,
+h4, h5, h6{
+  color: $f-title-color;
+  font-weight:800;
+}
+
+
+ol{
+  padding-left: 10px;
+  counter-reset: section;
+  li{
+    &:before{
+      counter-increment: section;
+      font-weight: 900;
+      content: counter(section) ' ';
+    }
+  }
+}

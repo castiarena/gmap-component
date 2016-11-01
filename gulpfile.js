@@ -5,7 +5,11 @@ var gulp    = require('gulp'),
     sass    = require('gulp-sass'),
     concat  = require('gulp-concat'),
     uglify  = require('gulp-uglify'),
-    browser = require('browser-sync');
+    browser = require('browser-sync'),
+    util = require('./config/utils'),
+    styles = require('./config/styles'),
+    scripts = require('./config/scripts');
+
 
 
 var inject = function(conf){
@@ -44,15 +48,22 @@ gulp.task('js',function(){
         }
     });
 
-    gulp.src('src/js/app.js')
-        .pipe(gulp.dest('dist/js'));
+    util.each(scripts,function(bundle,name){
+        gulp.src(bundle)
+            .pipe(concat(name + '.js'))
+            .pipe(gulp.dest('dist/js'));
+    });
+
 });
 
 gulp.task('sass',function(){
-   gulp.src('src/sass/component.scss')
-       .pipe(sass({outputStyle: 'compressed'}))
-       .pipe(concat('component.css'))
-       .pipe(gulp.dest('dist/css/'));
+    util.each(styles, function(bundle, name){
+        gulp.src(bundle)
+            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(concat(name + '.css'))
+            .pipe(gulp.dest('dist/css/'));
+    });
+
 });
 
 gulp.task('watch',function(){

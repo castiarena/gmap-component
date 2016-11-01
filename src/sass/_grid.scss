@@ -1,0 +1,44 @@
+$brutus-grid-cols: 12;
+
+.brutus-container{
+
+  @include mobile(){
+    width: auto;
+  }
+  @include tablet(){
+    width: auto;
+  }
+  @include desktop(){
+    width: $desktop-width-min;
+  }
+  @include wide(){
+    width: $wide-width-min;
+  }
+  margin: 0 auto;
+  padding: 0 15px;
+  display: block;
+}
+
+@for $i from 1 through $brutus-grid-cols{
+  .brutus-col-#{$i}{
+    float: left;
+    width: 0% + ((100 / 12) *  $i);
+    @include mobile(){
+      width: 100%;
+    }
+    @include tablet(){
+      width: 0% + ((100 / 12) *  $i) * 1.2;
+    }
+  }
+}
+
+
+.brutus-row{
+  &:before,&:after{
+    display: table;
+    content: ' ';
+  }
+  &:after{
+    clear: both;
+  }
+}

@@ -5,6 +5,7 @@
 (function(win,doc){
     'use strict';
 
+
     var GMap = function(config){
         var that = this;
         that.config         = config;
@@ -105,6 +106,7 @@
         google.maps.event.addListenerOnce(that.map, 'idle', function(){
             // do something only the first time the map is loaded
             that.setMarker('user', that.position);
+            that.setPeremeter('user', that.position);
 
         });
 
@@ -120,7 +122,7 @@
     GMap.prototype.setMarker = function(type, position){
         var that = this;
 
-        var center = {
+        var whiteCircle = {
             path: google.maps.SymbolPath.CIRCLE,
             fillOpacity: 1.0,
             fillColor: "#2f4f90",
@@ -128,26 +130,22 @@
             strokeColor: "#2f4f90",
             strokeWeight: 1.0,
             scale: 5
-        } , perimeter = {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillOpacity: 0.2,
-            fillColor: "#2f4f90",
-            strokeOpacity: 1,
-            strokeColor: "#2f4f90",
-            strokeWeight: 4,
-            scale: 20
         };
-        that.markers[type + '-center'] = new google.maps.Marker({
+        that.markers[type] = new google.maps.Marker({
             position: position,
-            icon: center,
-            map: that.map
+            icon: whiteCircle,
+            map: that.map,
+
         });
 
-        that.markers[type + '-perimeter'] = new google.maps.Marker({
-            position: position,
-            icon: perimeter,
-            map: that.map
+        that.map.addListener('dragstart',function(){
+            that.markers[type].setAnimation(google.maps.Animation.Pp);
         });
+
+        that.map.addListener('dragend',function(){
+            that.markers[type].setAnimation(google.maps.Animation.Np);
+        });
+
 
     };
 
@@ -162,6 +160,16 @@
             fillColor: "#2f4f90",
             fillOpacity: 0.3,
             map: that.map
+        });
+
+        that.map.addListener('zoom_changed',function(){
+            utils.transition(function(radius){
+                that.peremeters[type].setRadius(radius);
+            },{
+                from:  0,
+                to: utils.getUserDistance(that.map) * 0.03,
+                time: 800
+            })
         });
     };
 

@@ -15,7 +15,9 @@
     "google",
     "google",
     "maps",
-    "geolocalization"
+    "geolocalization",
+    "places",
+    "autocomplete"
   ],
   "author": "Agustin Castiarena castiarena@gmail.com",
   "license": "ISC",
@@ -23,11 +25,12 @@
     "url": "https://github.com/castiarena/gmap-component/issues"
   },
   "homepage": "https://github.com/castiarena/gmap-component",
-  "dependencies": {
-    "browser-sync": "^2.11.1",
+  "devDependencies": {
+    "browser-sync": "^2.16.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
-    "gulp-sass": "^2.2.0",
-    "gulp-uglify": "^1.5.3"
+    "gulp-jshint": "^2.0.1",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^1.5.4"
   }
 }

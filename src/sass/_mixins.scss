@@ -1,0 +1,44 @@
+//Responsive Mixins:
+// uso:
+// @include device(){
+//    @content
+//}
+
+/**
+MOBILE
+*/
+@mixin mobile{
+  $max: $mobile-width-max - 1;
+  @media (min-width: #{$mobile-width-min}) and (max-width: #{$max}) {
+    @content;
+  }
+}
+
+/**
+TABLET
+*/
+@mixin tablet {
+  $max: $tablet-width-max - 1;
+  @media (min-width: #{$tablet-width-min}) and (max-width: #{$max}) {
+    @content;
+  }
+}
+
+/**
+DESKTOP
+*/
+@mixin desktop {
+  $max: $desktop-width-max - 1;
+  @media (min-width: #{$desktop-width-min}) and (max-width: #{$max}) {
+    @content;
+  }
+}
+
+/**
+WIDE SCREEN
+*/
+@mixin wide {
+  @media (min-width: #{$wide-width-min}) and (max-width: #{$wide-width-max})  {
+    @content;
+  }
+}

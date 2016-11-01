@@ -1,0 +1,35 @@
+
+// brand
+$brand-color-1: mediumaquamarine;
+
+// font color
+$f-color-base: #fff;
+
+// font size
+$f-size-xs: 10px;
+$f-size-s: 12px;
+$f-size-m: 14px;
+$f-size-l: 16px;
+$f-size-xl: 18px;
+
+
+// title color
+$f-title-color: lighten($brand-color-1, 50%);
+
+// title size
+$f-title-size: 22px;
+
+
+// responsive
+
+$mobile-width-min: 320px;
+$mobile-width-max: 540px;
+
+$tablet-width-min: 540px;
+$tablet-width-max: 1024px;
+
+$desktop-width-min: 1024px;
+$desktop-width-max: 1280px;
+
+$wide-width-min: 1280px;
+$wide-width-max: 1920px;
